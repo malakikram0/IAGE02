@@ -1,0 +1,68 @@
+﻿@page "/OperationPage"
+@rendermode InteractiveServer
+@using IAGE02.Apps.Operations
+@using IAGE02.Entities.Lots
+@using IAGE02.Entities.Operation
+@using IAGE02.Entities.Operations
+@using IAGE02.Models.Lots
+@using IAGE02.Models.Operations
+
+
+<h3>Operation</h3>
+
+<EditForm Model="@operationModal"
+		  OnValidSubmit="creerOperation"
+		  FormName="create ">
+    <DataAnnotationsValidator />
+    
+    <InputSelect class="form-select" @bind-Value="@operationModal.TypeTravaux">
+        <option value="">Type travaux</option>
+        @foreach (var type in Enum.GetValues(typeof(TypeTravaux)))
+        {
+            <option value="@type">@type</option>
+        }
+    </InputSelect> <br />
+
+    <InputSelect class="form-select" @bind-Value="@operationModal.TypeBudget">
+        <option value="">Type budget</option>
+        @foreach (var type in Enum.GetValues(typeof(TypeBudget)))
+        {
+            <option value="@type">@type</option>
+        }
+    </InputSelect><br />
+
+    <InputText class="form-control" placeholder="Numero opération" @bind-Value="@operationModal.Numero" /> <br />
+    <ValidationMessage For="@(() => operationModal.Numero)" />
+    <InputText class="form-control" placeholder="Services contractant" @bind-Value="@operationModal.ServicesContractant" /> <br />
+    <InputText class="form-control" placeholder="Objet" @bind-Value="@operationModal.Objet" /> <br />
+
+    <InputSelect class="form-select" @bind-Value="@operationModal.ModeAttribuation">
+        <option value="">Nature</option>
+        @foreach (var type in Enum.GetValues(typeof(TypeModeAttribuation)))
+        {
+            <option value="@type">@type</option>
+        }
+    </InputSelect><br />
+
+    <InputText class="form-control" placeholder="N° visa" @bind-Value="@operationModal.NumeroVisa" /><br />
+    <InputDate class="form-control" @bind-Value="@operationModal.DateVisa" /><br />
+    <InputText class="form-control" placeholder="Désignation Lot" @bind-Value="lotModal.Number" />
+    <InputText class="form-control" placeholder="Désignation Lot" @bind-Value="lotModal.Designation" />
+    <button type="button" class="btn btn-success" @onclick="creerLot">Ajouter Lot</button>
+
+    <ul>
+        @foreach (var item in Lots)
+        {
+            <li>@item.NumeroLot → @item.Designation</li>
+        }
+    </ul>
+
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+</EditForm>
+
+
+<h1> resultat de operation @result</h1>
+
+
+    
+    

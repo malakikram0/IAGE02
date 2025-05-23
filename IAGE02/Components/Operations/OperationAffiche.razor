@@ -1,0 +1,66 @@
+﻿@page "/OperationAffiche"
+@using IAGE02.Apps.Operations
+@using IAGE02.Entities.Operation
+@using IAGE02.Entities.Operations
+@using IAGE02.Models.Operations
+@rendermode InteractiveServer
+<h3>OperationAffiche</h3>
+
+<button @onclick="afficherOperation">Afficher</button>
+
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Numero</th>
+                <th>TypeBudget</th>
+                <th>Objet</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var operation in operationsinfo)
+            {
+                <tr>
+                    <td>@operation.Id</td>
+                    <td>@operation.Numero</td>
+                    <td>@operation.TypeBudget</td>
+                    <td>@operation.Objet</td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+@code {
+    [Inject] private IOperationService operationService { get; set; }
+
+    private List<OperationInfo> operationsinfo = new();
+
+    private async Task afficherOperation()
+    {
+        List<Operation> operations = await operationService.GetOperations();
+        changerVersTypInfo(operations);
+    }
+
+    private void changerVersTypInfo(List<Operation> operations)
+    {
+        operationsinfo = operations.Select(o => new OperationInfo
+        {
+            Id = o.Id,
+            TypeTravaux = (TypeTravaux)o.TypeTravaux,
+            TypeBudget = (TypeBudget)o.TypeBudget,
+            Numero = o.Numero,
+            ServicesContractant = o.ServicesContractant,
+            Objet = o.Objet,
+            ModeAttribuation = (TypeModeAttribuation)o.ModeAttribuation,
+            NumeroVisa = o.NumeroVisa,
+            DateVisa = o.DateVisa,
+            
+        }).ToList();
+    }
+}
+
+

@@ -1,11 +1,17 @@
+using IAGE02.Apps.Operations;
 using IAGE02.Components;
+using IAGE02.Core.Services.Operations;
+using IAGE02.Infrastructures.Storages.Lots;
+using IAGE02.Infrastructures.Storages.Operations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
+builder.Services.AddScoped<IOperationStorage, OperationStorage>();
+builder.Services.AddScoped<IOperationService, OperationService>();
+builder.Services.AddScoped<ILotStorage, LotStorage>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

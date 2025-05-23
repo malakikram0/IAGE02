@@ -1,0 +1,67 @@
+﻿@page "/OperationModifie"
+@using IAGE02.Apps.Operations
+@using IAGE02.Entities.Operation
+@using IAGE02.Entities.Operations
+@using IAGE02.Models.Operations
+<h3>Component</h3>
+<h3>Détails de l'opération</h3>
+@rendermode InteractiveServer
+ <p><strong>ID:</strong> @operationModal.Id</p>
+<p><strong>Numéro:</strong> @operationModal.Numero</p>
+<p><strong>Service contractant:</strong> @operationModal.ServicesContractant</p>
+<p><strong>Objet:</strong> @operationModal.Objet</p>
+<p><strong>Type de travaux:</strong> @operationModal.TypeTravaux</p>
+<p><strong>Type de budget:</strong> @operationModal.TypeBudget</p>
+<p><strong>Mode d'attribution:</strong> @operationModal.ModeAttribuation</p>
+<p><strong>Numéro de visa:</strong> @operationModal.NumeroVisa</p>
+<p><strong>Date de visa:</strong> @operationModal.DateVisa.ToShortDateString()</p>
+<p><strong>Statut:</strong> @operationModal.OpertionState </p> 
+<button @onclick="ModifierLot">modifier lot</button>
+
+
+<EditForm Model="operationModal" OnValidSubmit="Modifier">
+    <DataAnnotationsValidator />
+
+    <InputSelect class="form-select" @bind-Value="@operationModal.TypeTravaux">
+        <option value="">Type travaux</option>
+        @foreach (var type in Enum.GetValues(typeof(TypeTravaux)))
+        {
+            <option value="@type">@type</option>
+        }
+    </InputSelect> <br />
+
+    <InputSelect class="form-select" @bind-Value="@operationModal.TypeBudget">
+        <option value="">Type budget</option>
+        @foreach (var type in Enum.GetValues(typeof(TypeBudget)))
+        {
+            <option value="@type">@type</option>
+        }
+    </InputSelect><br />
+
+    <InputText class="form-control" placeholder="Numero opération" @bind-Value="@operationModal.Numero" /> <br />
+    <ValidationMessage For="@(() => operationModal.Numero)" />
+    <InputText class="form-control" placeholder="Services contractant" @bind-Value="@operationModal.ServicesContractant" /> <br />
+    <InputText class="form-control" placeholder="Objet" @bind-Value="@operationModal.Objet" /> <br />
+
+    <InputSelect class="form-select" @bind-Value="@operationModal.ModeAttribuation">
+        <option value="">Nature</option>
+        @foreach (var type in Enum.GetValues(typeof(TypeModeAttribuation)))
+        {
+            <option value="@type">@type</option>
+        }
+    </InputSelect><br />
+
+    <InputText class="form-control" placeholder="N° visa" @bind-Value="@operationModal.NumeroVisa" /><br />
+    <InputDate class="form-control" @bind-Value="@operationModal.DateVisa" /><br />
+
+ 
+
+    
+
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+</EditForm>
+
+@result
+
+        
+        
