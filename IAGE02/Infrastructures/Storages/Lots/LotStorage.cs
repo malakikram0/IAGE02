@@ -19,6 +19,9 @@ public class LotStorage(IConfiguration configuration) : ILotStorage
 
     private const string insertLotCommand = "insertLot";
     private const string updateLotCommand = "updateLot";
+    private const string selectLotCommand = @"
+    SELECT * 
+    FROM dbo.GettAllLotNonSupprimer(@aId_Operation);";
     public async Task<bool> InsertLot(Lot lot)
     {
         await using SqlConnection con = new SqlConnection(connectionString);
@@ -55,5 +58,32 @@ public class LotStorage(IConfiguration configuration) : ILotStorage
         await cmd.ExecuteNonQueryAsync();
 
         return (int)cmd.Parameters["@aReturn"].Value;
+    }
+    private static Lot mapLot(SqlDataReader reader)
+    {
+        return new Lot
+        {
+           IdOperation= (Guid)reader["OperationId"],
+            NumeroLot = (string )reader["Numero"],
+            Designation = (string)reader["Designation"]
+
+        };
+    }
+    public async Task<List<Lot>> SelectLotsByOperationId(Guid idOperation)
+    {
+        var lots = new List<Lot>();
+        await using var con = new SqlConnection(connectionString);
+
+        using var cmd = new SqlCommand(selectLotCommand, con);
+        cmd.Parameters.AddWithValue("@aId_Operation", idOperation);
+        
+        await con.OpenAsync();
+
+        using var reader = await cmd.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
+        {
+            lots.Add(mapLot(reader)); 
+        }
+        return lots;
     }
 }

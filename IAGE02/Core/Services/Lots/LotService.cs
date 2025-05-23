@@ -8,6 +8,12 @@ namespace IAGE02.Core.Services.Lots
     public class LotService : ILotService
     {
         [Inject] private ILotStorage lotStorage { get; set; }
+
+        public Task<List<Lot>> getLot(Lot lot)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<string> updateLot(Lot lot)
         {
            int result= await lotStorage.UpdateLot(lot);

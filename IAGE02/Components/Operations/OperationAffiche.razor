@@ -6,11 +6,9 @@
 @rendermode InteractiveServer
 <h3>OperationAffiche</h3>
 
-<button @onclick="afficherOperation">Afficher</button>
 
-
-
-    <table class="table">
+<h1>table operation</h1>
+<table class="table table-striped-columns">
         <thead>
             <tr>
                 <th>Id</th>
@@ -32,35 +30,36 @@
             }
         </tbody>
     </table>
-
-
-@code {
-    [Inject] private IOperationService operationService { get; set; }
-
-    private List<OperationInfo> operationsinfo = new();
-
-    private async Task afficherOperation()
-    {
-        List<Operation> operations = await operationService.GetOperations();
-        changerVersTypInfo(operations);
-    }
-
-    private void changerVersTypInfo(List<Operation> operations)
-    {
-        operationsinfo = operations.Select(o => new OperationInfo
-        {
-            Id = o.Id,
-            TypeTravaux = (TypeTravaux)o.TypeTravaux,
-            TypeBudget = (TypeBudget)o.TypeBudget,
-            Numero = o.Numero,
-            ServicesContractant = o.ServicesContractant,
-            Objet = o.Objet,
-            ModeAttribuation = (TypeModeAttribuation)o.ModeAttribuation,
-            NumeroVisa = o.NumeroVisa,
-            DateVisa = o.DateVisa,
-            
-        }).ToList();
-    }
+    <h1> table lot</h1>
+@if (!lotInfo.Any())
+{
+    <h4>Pas de donner </h4>
 }
+
+else
+{
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Lot ID</th>
+                <th>Numéro</th>
+                <th>Désignation</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lot in lotInfo)
+            {
+                <tr>
+                    <td>@lot.</td>
+                    <td>@lot.NumeroLot</td>
+                    <td>@lot.Designation</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
 
 
